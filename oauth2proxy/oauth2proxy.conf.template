@@ -1,0 +1,17 @@
+provider = "azure"
+http_address = "authproxy:4180"
+email_domains = ["*"]
+scope = "openid"
+
+cookie_secret = "${COOKIE_SECRET}"
+cookie_secure = false
+session_cookie_minimal = true
+
+azure_tenant = "${TENANT_ID}"
+
+oidc_issuer_url = "https://login.microsoftonline.com/${TENANT_ID}/v2.0"
+
+client_id = "${APPLICATION_CLIENT_ID}"
+client_secret = "${APPLICATION_CLIENT_SECRET}"
+
+redirect_url = "${REDIRECT_URL}"
