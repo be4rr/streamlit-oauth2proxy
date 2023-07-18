@@ -15,15 +15,15 @@ services:
     volumes:
       - ./nginx/nginx.conf.template:/etc/nginx/templates/default.conf.template
       # - ./nginx/nginx-acme.conf.template:/etc/nginx/templates/default.conf.template
-      - ./certbot/conf:/etc/letsencrypt
+      - ./certbot/config:/etc/letsencrypt
       - ./certbot/www:/var/www/certbot
     depends_on:
       - streamlit
     environment:
       DOMAIN: ${DOMAIN}
-  
+
   authproxy:
-    build: 
+    build:
       context: .
       dockerfile: ./oauth2proxy/Dockerfile
     ports:
