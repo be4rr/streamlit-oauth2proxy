@@ -8,18 +8,20 @@ services:
     restart: always
 
   nginx:
-    image: nginx
+    image: nginx:latest # https://hub.docker.com/_/nginx
     ports:
       - 80:80
       - 443:443
     volumes:
-      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./nginx/nginx.conf.template:/etc/nginx/templates/default.conf.template
+      # - ./nginx/nginx-acme.conf.template:/etc/nginx/templates/default.conf.template
       - ./certbot/conf:/etc/letsencrypt
       - ./certbot/www:/var/www/certbot
     depends_on:
       - streamlit
+    environment:
+      DOMAIN: ${DOMAIN}
   
-  # https://shanch.net/docker-streamlit-nginx-oauth2-proxy/
   authproxy:
     build: 
       context: .
@@ -32,11 +34,3 @@ services:
       APPLICATION_CLIENT_SECRET: ${APPLICATION_CLIENT_SECRET}
       REDIRECT_URL: ${REDIRECT_URL}
       COOKIE_SECRET: ${COOKIE_SECRET}
-
-    certbot:
-      image: certbot/certbot
-      container_name: certbot
-      volumes: 
-        - ./certbot/conf:/etc/letsencrypt
-        - ./certbot/www:/var/www/certbot
-      command: certonly --webroot -w /var/www/certbot --force-renewal --email ${EMAIL} -d ${DOMAIN} --agree-tos

@@ -1,0 +1,11 @@
+server {
+    listen 80;
+    server_name ${DOMAIN};
+
+    root /var/www/html;
+
+    # set up acme
+    location ~ /.well-known/acme-challenge/ {
+        root /var/www/certbot;
+    }
+}
